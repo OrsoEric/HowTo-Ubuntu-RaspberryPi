@@ -153,6 +153,34 @@ Codename:       noble
 htop
 ```
 
+## Network interfaces
+
+list interfaces name and addresses, the names are used in netplan, and change depending on hardware and driver. should be consistent on raspberries
+
+```ip a```
+
+```bash
+sona@rpi4-orso-sda:~$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether e4:5f:01:7f:ef:3e brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.220/23 metric 100 brd 192.168.1.255 scope global dynamic eth0
+       valid_lft 97526sec preferred_lft 97526sec
+    inet6 fe80::e65f:1ff:fe7f:ef3e/64 scope link
+       valid_lft forever preferred_lft forever
+3: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether e4:5f:01:7f:ef:3f brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.240/23 metric 600 brd 192.168.1.255 scope global dynamic wlan0
+       valid_lft 97728sec preferred_lft 97728sec
+    inet6 fe80::e65f:1ff:fe7f:ef3f/64 scope link
+       valid_lft forever preferred_lft forever
+```
+
 ## Netplan
 
 This is the bane of ubuntu, an incredibly brittle config network file that will brick any headless SBC if anything goes wrong, and can stall for minutes the boot
