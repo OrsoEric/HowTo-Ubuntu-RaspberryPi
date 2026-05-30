@@ -1632,6 +1632,17 @@ The default terminal is too short for apt commands and the likes to make termina
 
 ![](/images/Screenshot%202026-05-30%20101944%20expand%20scrollback.png)
 
+# File Transfer from Raspberry to Host
+
+Simplest way is to use [Filezilla](https://filezilla-project.org/download.php?show_all=1&type=server), with ftp over ssh sftp protocol
+
+![](/images/Screenshot%202026-05-30%20112438filezilla%20connect.png)
+
+![](/images/Screenshot%202026-05-30%20112459%20connect.png)
+
+![](/images/Screenshot%202026-05-30%20112512%20raspberry%20files.png)
+
+You can just drag and drop files from right (raspberry) to left (host) and vice versa. Very convenient and without setting up a file server since it uses SSH.
 
 # EOL
 
