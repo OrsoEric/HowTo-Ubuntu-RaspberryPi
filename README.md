@@ -8,7 +8,7 @@ Ubuntu has two beasts that need slaying to make Raspberry Pi Headless work:
 - Netplan
 - APT sources
 
-The problem with netplan is if you touch it, it will brick, and your headless Raspberry Pi is dead in the water.
+The problem with netplan is if you touch it, it will brick, and your headless Raspberry Pi is dead in the water. And because it's an headless Raspberry Pi, you need to nail down the network configuration without KVM. It's a consistent problem I have with robots, this guide lists a number of workaround to keep the netplan from bricking, keep the Raspberry connected, and finding it on the network.
 
 The problem with APT Sources is that they changed place and aren't there, bricking many packages for things like Raspicam and ROS2
 
