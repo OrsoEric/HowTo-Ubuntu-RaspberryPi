@@ -2,9 +2,15 @@
 
 Instruction how to make Ubuntu run on Raspberry Pi headless
 
-Ubuntu's netplan makes this extremely difficult
-
 ![](images/2026-05-30_07_28_IMG_20260530_072810%20Raspberry%20Pi%204B%20Ubuntu%2024%20Server%20LTS%20Ethernet%20and%20WiFi.jpg)
+
+Ubuntu has two beasts that need slaying to make Raspberry Pi Headless work:
+- Netplan
+- APT sources
+
+The problem with netplan is if you touch it, it will brick, and your headless Raspberry Pi is dead in the water.
+
+The problem with APT Sources is that they changed place and aren't there, bricking many packages for things like Raspicam and ROS2
 
 ## Materials
 
@@ -72,7 +78,9 @@ There are three ways to do it
 - connect via ethernet and hope that the dhcp of the ethernet worked
 - connect KVM and hope that it boots into HDMI
 
-None of the three ways are reliable, headless booting of Ubuntu into Raspberry is almost impossible because of the cloud init that brick it constantly
+None of the three ways are reliable, headless booting of Ubuntu into Raspberry is almost impossible because of the cloud init will brick when touched. E.g. it's convenient to have a static IP on the ethernet of the Raspberry Pi since I often connect with a computer point to point for dev, but it's easy to brick the network configuration. Netplan syntax changes constantly and an old way will brick it.
+
+This guide will walk through ways to edit it more safely, but the most reliable way to do it, is to let RaspberryPi Imager compile the Netplan with a WiFi and DHCP, and never touch it. Using a DHCP on the host or a router if you use the ethernet
 
 ## Putty
 
@@ -1413,6 +1421,118 @@ This is dangerous:
 ```bash
 sudo netplan apply
 ```
+
+## APT SOURCE 
+
+Another bane of ubuntu is the apt source, that too changes constantly and bricks many guides you try to follow. [E.g. ROS2 guide was bricked because of a apt source changed](https://github.com/ros2/ros2_documentation/issues/6853) 
+
+There are two config files for apt source, both work, and don't.
+
+### /etc/apt/sources.list.d/ubuntu.sources
+
+As far as I can tell, this is the desirable apt source
+
+```bash
+cat /etc/apt/sources.list.d/ubuntu.sources
+```
+
+```bash
+sona@rpi-orso-sdb:~/2026-05-29-picamera2$ cat /etc/apt/sources.list.d/ubuntu.sources
+## Ubuntu distribution repository
+##
+## The following settings can be adjusted to configure which packages to use from Ubuntu.
+## Mirror your choices (except for URIs and Suites) in the security section below to
+## ensure timely security updates.
+##
+## Types: Append deb-src to enable the fetching of source package.
+## URIs: A URL to the repository (you may add multiple URLs)
+## Suites: The following additional suites can be configured
+##   <name>-updates   - Major bug fix updates produced after the final release of the
+##                      distribution.
+##   <name>-backports - software from this repository may not have been tested as
+##                      extensively as that contained in the main release, although it includes
+##                      newer versions of some applications which may provide useful features.
+##                      Also, please note that software in backports WILL NOT receive any review
+##                      or updates from the Ubuntu security team.
+## Components: Aside from main, the following components can be added to the list
+##   restricted  - Software that may not be under a free license, or protected by patents.
+##   universe    - Community maintained packages. Software in this repository receives maintenance
+##                 from volunteers in the Ubuntu community, or a 10 year security maintenance
+##                 commitment from Canonical when an Ubuntu Pro subscription is attached.
+##   multiverse  - Community maintained of restricted. Software from this repository is
+##                 ENTIRELY UNSUPPORTED by the Ubuntu team, and may not be under a free
+##                 licence. Please satisfy yourself as to your rights to use the software.
+##                 Also, please note that software in multiverse WILL NOT receive any
+##                 review or updates from the Ubuntu security team.
+##
+## See the sources.list(5) manual page for further settings.
+Types: deb
+URIs: http://ports.ubuntu.com/ubuntu-ports/
+Suites: noble noble-updates noble-backports
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+## Ubuntu security updates. Aside from URIs and Suites,
+## this should mirror your choices in the previous section.
+Types: deb
+URIs: http://ports.ubuntu.com/ubuntu-ports/
+Suites: noble-security
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+```
+
+### /etc/apt/sources.list
+
+As far as I can tell, this second source works poorly and it's better to comment it if uncommented
+
+```bash
+cat /etc/apt/sources.list
+```
+
+```bash
+(.venv) sona@rpi-orso-sdb:~/2026-05-29-picamera2$ cat /etc/apt/sources.list
+#deb http://ports.ubuntu.com/ubuntu-ports noble main restricted universe multiverse
+#deb http://ports.ubuntu.com/ubuntu-ports noble-updates main restricted universe multiverse
+#deb http://ports.ubuntu.com/ubuntu-ports noble-security main restricted universe multiverse
+#deb http://ports.ubuntu.com/ubuntu-ports noble-backports main restricted universe multiverse
+```
+
+### Fix Broken Apt Dependency Error by Adding more Sources
+
+For reason I do not understand, when installed, the source will just list ```Suites: noble```
+
+But so many packages will require more sources, and fail with oblique errors that will not lead you to apt source. E.g. below you see that apt tells you something is broken. But the true problem is that apt sources are missing in ubuntu by default.
+
+```bash
+The following packages have unmet dependencies:
+ libidn2-dev : Depends: libidn2-0 (= 2.3.7-2build1) but 2.3.7-2build1.1 is to be installed
+ libp11-kit-dev : Depends: libp11-kit0 (= 0.25.3-4ubuntu2) but 0.25.3-4ubuntu2.1 is to be installed
+ libzstd-dev : Depends: libzstd1 (= 1.5.5+dfsg2-2build1) but 1.5.5+dfsg2-2build1.1 is to be installed
+ nettle-dev : Depends: libnettle8t64 (= 3.9.1-2.2build1) but 3.9.1-2.2build1.1 is to be installed
+              Depends: libhogweed6t64 (= 3.9.1-2.2build1) but 3.9.1-2.2build1.1 is to be installed
+              Depends: libgmp-dev but it is not going to be installed
+ zlib1g-dev : Depends: zlib1g (= 1:1.3.dfsg-3.1ubuntu2) but 1:1.3.dfsg-3.1ubuntu2.1 is to be installed
+E: Unable to correct problems, you have held broken packages.
+```
+
+I found some useful addition to fix some of the bricked apt packages are: ```Suites: noble noble-updates noble-backports```
+
+**You must edit this by hand to add more apt sources**
+
+```bash
+sudo nano /etc/apt/sources.list.d/ubuntu.sources
+
+#add noble-updates noble-backports
+
+sudo apt update 
+
+sudo apt full-upgrade
+
+sudo reboot
+```
+
+Then if you try to install the packages, this time it should work
+
 
 # APPLICATIONS
 
