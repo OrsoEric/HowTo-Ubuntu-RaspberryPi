@@ -152,7 +152,7 @@ https://pjo2.github.io/tftpd64/
 
 Look into your router to see if the Raspberry Pi connected to WiFi and got an address
 
-![](/images/Screenshot%202026-05-23%20123012.png)
+![](/images/Screenshot%202026-05-30%20073002%20router%20pi%20ip%20address.png)
 
 ![](images/Screenshot%202026-05-23%20123240.png)
 
@@ -1424,10 +1424,76 @@ source .venv/bin/activate
 
 It's very convenient to use the ```remote``` plugin of VS Code to connect headless to the raspberry Pi via SSH and develop from a host machine, while running code on the raspberry
 
+## Install VS Code Remote Plugin
 
+![](/images/Screenshot%202026-05-30%20074737%20VS%20Code%20Remote.png)
 
+## Connect to Raspberry
 
+A new icon appear bottom left ```><```
 
+![](/images/Screenshot%202026-05-30%20074801%20bottom%20left%20remote%20icon.png)
+
+Top center appear a dropdown. Select connect host same window, otherwise will open a new VS Code window
+
+![](images/Screenshot%202026-05-30%20074925%20top%20center%20dropdown%20-%20select%20connect%20host%20same%20window.png)
+
+connect ```user@ipaddress```
+
+![](/images/Screenshot%202026-05-30%20074816%20user%20ip.png)
+
+select OS of remote machine, for the raspberry ubuntu it's linux
+
+![](/images/Screenshot%202026-05-30%20075009%20select%20os.png)
+
+confirm fingerprint and  type password of remote machine
+
+![](/images/Screenshot%202026-05-30%20075147%20fingerprint%20continue.png)
+
+![](/images/Screenshot%202026-05-30%20075158%20type%20remote%20password.png)
+
+Now VS Code is connected with remote machine, and terminal is the remote terminal, letting you run all commands like with ```putty```
+
+![](/images/Screenshot%202026-05-30%20075400%20connected.png)
+
+## Git Clone and Run Code
+
+VS Code is connected but no particular project folders are opened
+
+It's convenient to create a project in github, git clone and sync. This way the work done in the remote machine is going to be conveniently backed up on github for replication
+
+First git clone a repo on the terminal. E.g.
+
+```git clone https://github.com/OrsoEric/HowTo-Ubuntu24S-Raspicam-Webserver-Streaming.git```
+
+![](/images/Screenshot%202026-05-30%20075532%20git%20clone%20project.png)
+
+Next open the folder like you would normally do, VS Code will list all remote folders
+
+![](/images/Screenshot%202026-05-30%20075542%20open%20project%20folder.png)
+
+![](/images/Screenshot%202026-05-30%20075618%20connected%20to%20remote%20folder.png)
+
+## Install extensions on Remote
+
+VS Code has installed a VS Code server on the remote, you need to add plugins there as well. E.g. it's convenient to add ```gitgraph```
+
+![](/images/Screenshot%202026-05-30%20081357%20install%20gitgraph.png)
+
+![](/images/Screenshot%202026-05-30%20081624%20remote%20git.png)
+
+From gitgraph it's easy to setup the user details that will sign the commit
+
+![](/images/Screenshot%202026-05-30%20081825%20gitgtaph%20gear.png)
+![](/images/Screenshot%202026-05-30%20081814%20gitgraph%20set%20user.png)
+
+Now you can commit from the raspberry pi remote machine to github and have your work backed up, so you can git clone it on another machine
+
+![](/images/Screenshot%202026-05-30%20082200%20first%20commit.png)
+
+![](/images/Screenshot%202026-05-30%20082221%20remote%20sync.png)
+
+![](/images/Screenshot%202026-05-30%20082248%20github.png)
 
 # EOL
 
