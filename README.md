@@ -4,6 +4,8 @@ Instruction how to make Ubuntu run on Raspberry Pi headless
 
 Ubuntu's netplan makes this extremely difficult
 
+![](images/2026-05-30_07_28_IMG_20260530_072810%20Raspberry%20Pi%204B%20Ubuntu%2024%20Server%20LTS%20Ethernet%20and%20WiFi.jpg)
+
 # Raspberry Pi Imager
 
 https://www.raspberrypi.com/software/
