@@ -85,6 +85,44 @@ If this gets quick to the login page is good, use your credentials
 
 ![](/images/Screenshot%202026-05-23%20123220.png)
 
+### DUPLICATED SSH KEY
+
+```bash
+[07:35:09.839] Generated SSH command: 'type "C:\Users\FATHER~1\AppData\Local\Temp\vscode-linux-multi-line-command-192.168.1.227-850984785.sh" | "C:\Windows\System32\OpenSSH\ssh.exe" -T -D 51080 "sona@192.168.1.227" sh'
+[07:35:09.839] Using connect timeout of 17 seconds
+[07:35:09.840] Terminal shell path: C:\Windows\System32\cmd.exe
+[07:35:10.058] > 
+[07:35:10.059] Got some output, clearing connection timeout
+[07:35:10.068] > 
+[07:35:10.136] > @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+> @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+> @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+> IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+> Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+> It is also possible that a host key has just been changed.
+> The fingerprint for the ED25519 key sent by the remote host is
+> SHA256:a...Y.
+> Please contact your system administrator.
+> Add correct host key in C:\\Users\\FatherOfMachines/.ssh/known_hosts to get rid of this message.
+> Offending ECDSA key in C:\\Users\\FatherOfMachines/.ssh/known_hosts:15
+> Host key for 192.168.1.227 has changed and you have requested strict checking.
+> Host key verification failed.
+> The process tried to write to a nonexistent pipe.
+[07:35:10.436] "install" terminal command done
+[07:35:10.437] Install terminal quit with output: Host key verification failed.
+[07:35:10.437] Received install output: Host key verification failed.
+[07:35:10.437] WARN: $PLATFORM is undefined in installation script output.  Errors may be dropped.
+[07:35:10.437] Failed to parse remote port from server output
+[07:35:10.438] Exec server for ssh-remote+7b...d failed: Error
+[07:35:10.438] Error opening exec server for ssh-remote+7...d: Error
+[07:35:10.438] No hints found in the recent session.
+```
+
+go to ```C:\Users\FatherOfMachines\.ssh``` open ```known_hosts``` and delete the entry associated with the IP address and SSH 
+
+![](images/Screenshot%202026-05-30%20074015%20Windows%20SSH%20keys%20delete%20if%20IP%20already%20used.png)
+
+
 ## Use IP scanner to find Raspberry Pi IP
 
 [I use Angry IP scanner](https://angryip.org/)
@@ -1380,6 +1418,15 @@ uv venv .venv --python 3.13
 
 source .venv/bin/activate
 ```
+
+
+# VS Code Remote
+
+It's very convenient to use the ```remote``` plugin of VS Code to connect headless to the raspberry Pi via SSH and develop from a host machine, while running code on the raspberry
+
+
+
+
 
 
 # EOL
