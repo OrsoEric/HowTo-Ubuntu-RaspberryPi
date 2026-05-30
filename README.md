@@ -1603,7 +1603,7 @@ Next open the folder like you would normally do, VS Code will list all remote fo
 
 ![](/images/Screenshot%202026-05-30%20075618%20connected%20to%20remote%20folder.png)
 
-## Install extensions on Remote
+## Install Remote extensions on RaspberryPi
 
 VS Code has installed a VS Code server on the remote, you need to add plugins there as well. E.g. it's convenient to add ```gitgraph```
 
@@ -1623,6 +1623,15 @@ Now you can commit from the raspberry pi remote machine to github and have your 
 ![](/images/Screenshot%202026-05-30%20082221%20remote%20sync.png)
 
 ![](/images/Screenshot%202026-05-30%20082248%20github.png)
+
+## Expand Terminal 
+
+The default terminal is too short for apt commands and the likes to make terminal longer go into settings and expand to 10000
+
+![](/images/Screenshot%202026-05-30%20102002%20settings.png)
+
+![](/images/Screenshot%202026-05-30%20101944%20expand%20scrollback.png)
+
 
 # EOL
 
